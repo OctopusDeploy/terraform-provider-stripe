@@ -1,4 +1,4 @@
-module github.com/franckverrot/terraform-provider-stripe
+module github.com/OctopusDeploy/terraform-provider-stripe
 
 go 1.12
 

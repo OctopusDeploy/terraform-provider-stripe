@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/franckverrot/terraform-provider-stripe/stripe"
+	"github.com/OctopusDeploy/terraform-provider-stripe/stripe"
 	"github.com/hashicorp/terraform/plugin"
 )
 
