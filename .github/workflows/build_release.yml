@@ -22,20 +22,20 @@ jobs:
 
       - name: Build
         run: |
-          CGO_ENABLED=0 GOOS=darwin   GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-darwin-amd64
-          CGO_ENABLED=0 GOOS=linux    GOARCH=386   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-linux-386
-          CGO_ENABLED=0 GOOS=linux    GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-linux-amd64
-          CGO_ENABLED=0 GOOS=linux    GOARCH=arm   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-linux-arm
-          CGO_ENABLED=0 GOOS=windows  GOARCH=386   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-windows-386.exe
-          CGO_ENABLED=0 GOOS=windows  GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-windows-amd64.exe
+          CGO_ENABLED=0 GOOS=darwin   GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/darwin_amd64/terraform-provider-stripe
+          CGO_ENABLED=0 GOOS=linux    GOARCH=386   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/linux-386/terraform-provider-stripe
+          CGO_ENABLED=0 GOOS=linux    GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/linux-amd64/terraform-provider-stripe
+          CGO_ENABLED=0 GOOS=linux    GOARCH=arm   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/linux-arm/terraform-provider-stripe
+          CGO_ENABLED=0 GOOS=windows  GOARCH=386   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/windows-386/terraform-provider-stripe.exe
+          CGO_ENABLED=0 GOOS=windows  GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/windows-amd64/terraform-provider-stripe.exe
 
       - name: Compute checksum of binaries
         run: |
-          for binary in build/*; do
-            sha256sum -b $binary > $binary.sha356
+          for binary in build/**/*; do
+            sha256sum -b $binary > $binary.sha256
           done
 
       - uses: actions/upload-artifact@v3
         with:
-          name: terraform-provider-stripe-build-artifacts
+          name: build-artifacts
           path: build/
