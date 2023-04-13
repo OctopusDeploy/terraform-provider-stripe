@@ -33,7 +33,7 @@ jobs:
             sha256sum -b $binary > $binary.sha356
           done
 
-      - uses: actions/upload-artifact@3
+      - uses: actions/upload-artifact@v3
         with:
           name: build
           path: build/
