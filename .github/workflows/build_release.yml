@@ -1,0 +1,37 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ *]
+  pull_request:
+    branches: [ * ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.12.1
+
+      - name: Build
+        run: |
+          CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-darwin-amd64
+          CGO_ENABLED=0 GOOS=linux  GOARCH=386   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-linux-386
+          CGO_ENABLED=0 GOOS=linux  GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-linux-amd64
+          CGO_ENABLED=0 GOOS=linux  GOARCH=arm   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform-provider-stripe-linux-arm
+
+      - name: Compute checksum of binaries
+        run: |
+          for binary in build/*; do
+            sha256sum -b $binary > $binary.sha356
+          done
+
+      - uses: actions/upload-artifact@3
+        with:
+          name: build
+          path: build/
