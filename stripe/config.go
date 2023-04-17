@@ -3,8 +3,8 @@ package stripe
 import (
 	"log"
 
-	"github.com/stripe/stripe-go/v72"
-	"github.com/stripe/stripe-go/v72/client"
+	stripe "github.com/stripe/stripe-go/v73"
+	"github.com/stripe/stripe-go/v73/client"
 )
 
 // Config stores Stripe's API configuration

@@ -5,8 +5,8 @@ import (
 
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/helper/validation"
-	stripe "github.com/stripe/stripe-go/v72"
-	"github.com/stripe/stripe-go/v72/client"
+	stripe "github.com/stripe/stripe-go/v73"
+	"github.com/stripe/stripe-go/v73/client"
 )
 
 func resourceStripePlan() *schema.Resource {
@@ -183,9 +183,11 @@ func resourceStripePlanCreate(d *schema.ResourceData, m interface{}) error {
 	// TODO: check currency
 
 	params := &stripe.PlanParams{
-		Interval:  stripe.String(planInterval),
-		ProductID: stripe.String(planProductID),
-		Currency:  stripe.String(planCurrency),
+		Interval: stripe.String(planInterval),
+		Product: &stripe.PlanProductParams{
+			ID: stripe.String(planProductID),
+		},
+		Currency: stripe.String(planCurrency),
 	}
 
 	amount := d.Get("amount").(int)
