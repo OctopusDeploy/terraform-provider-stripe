@@ -23,11 +23,11 @@ jobs:
       - name: Build
         run: |
           CGO_ENABLED=0 GOOS=darwin   GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/darwin_amd64/terraform-provider-stripe
-          CGO_ENABLED=0 GOOS=linux    GOARCH=386   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/linux-386/terraform-provider-stripe
-          CGO_ENABLED=0 GOOS=linux    GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/linux-amd64/terraform-provider-stripe
-          CGO_ENABLED=0 GOOS=linux    GOARCH=arm   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/linux-arm/terraform-provider-stripe
-          CGO_ENABLED=0 GOOS=windows  GOARCH=386   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/windows-386/terraform-provider-stripe.exe
-          CGO_ENABLED=0 GOOS=windows  GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/windows-amd64/terraform-provider-stripe.exe
+          CGO_ENABLED=0 GOOS=linux    GOARCH=386   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/linux_386/terraform-provider-stripe
+          CGO_ENABLED=0 GOOS=linux    GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/linux_amd64/terraform-provider-stripe
+          CGO_ENABLED=0 GOOS=linux    GOARCH=arm   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/linux_arm/terraform-provider-stripe
+          CGO_ENABLED=0 GOOS=windows  GOARCH=386   go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/windows_386/terraform-provider-stripe.exe
+          CGO_ENABLED=0 GOOS=windows  GOARCH=amd64 go build -mod=vendor -ldflags="-s -w" -a -o build/terraform.octopus.com/terraform-provider-stripe/stripe/1.10.0/windows_amd64/terraform-provider-stripe.exe
 
       - name: Compute checksum of binaries
         run: find . -type f -name 'terraform-provider-stripe*' -exec sh -c 'sha256sum -b {} > {}.sha256' \;
