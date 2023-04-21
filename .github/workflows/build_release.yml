@@ -42,7 +42,7 @@ jobs:
           name: $PackageName
           path: $PackageName
           
-      - name: Create Release
+      - name: Create Release (tags only)
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
