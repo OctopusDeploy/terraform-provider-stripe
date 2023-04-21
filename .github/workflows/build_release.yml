@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      PackageName: terraform-stripe-provider-${{github.ref_name}}.tar
+      PackageName: terraform-stripe-provider.tar
     steps:
       - uses: actions/checkout@v3
 
