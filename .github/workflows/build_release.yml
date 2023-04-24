@@ -39,8 +39,8 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: $PackageName
-          path: $PackageName
+          name: ${{ env.$PackageName }}
+          path: ${{ env.$PackageName }}
           
       - name: Create Release (tags only)
         uses: softprops/action-gh-release@v1
