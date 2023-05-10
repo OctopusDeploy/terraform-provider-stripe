@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "*"
+    tags:
+      - "*"
   pull_request:
     branches:
       - "*"
@@ -12,6 +14,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    env:
+      PackageName: terraform-stripe-provider.tar
     steps:
       - uses: actions/checkout@v3
 
@@ -31,8 +35,20 @@ jobs:
 
       - name: Compute checksum of binaries
         run: find . -type f -name 'terraform-provider-stripe*' -exec sh -c 'sha256sum -b {} > {}.sha256' \;
+        
+      - name: Tar files
+        run: tar -cvf $PackageName build/
 
       - uses: actions/upload-artifact@v3
         with:
-          name: build-artifacts
-          path: build/
+          name: ${{ env.PackageName }}
+          path: ${{ env.PackageName }}
+          
+      - name: Create Release (tags only)
+        uses: softprops/action-gh-release@v1
+        if: github.ref_type == 'tag'
+        with:
+          files: $PackageName
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
