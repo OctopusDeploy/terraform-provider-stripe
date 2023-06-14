@@ -6,3 +6,4 @@ terraform-provider-stripe
 
 # Mac OSX
 .DS_Store
+dist/
