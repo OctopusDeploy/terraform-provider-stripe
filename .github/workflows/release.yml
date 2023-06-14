@@ -50,5 +50,5 @@ jobs:
           shasums_url = $( response | jq ".data.links.shasums-upload")
           sig_url = $( response | jq ".data.links.shasums-sig-upload")
           
-          echo "SHASUMS_UPLOAD_URL=$(shasums_url)" >> "GITHUB_OUTPUT"
-          echo "SHASUMS_SIG_UPLOAD_URL=$(sig_url)" >> "GITHUB_OUTPUT"
+          echo "SHASUMS_UPLOAD_URL=$(shasums_url)" >> "$GITHUB_OUTPUT"
+          echo "SHASUMS_SIG_UPLOAD_URL=$(sig_url)" >> "$GITHUB_OUTPUT"

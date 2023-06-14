@@ -28,8 +28,9 @@ jobs:
           version: latest
 
       - id: packageName
+        name: Calculate package name
         run: |
-          echo "PACKAGE_NAME=${{ format('{0}_{1}.tar', fromJson(steps.goreleaser.outputs.metadata).project_name, fromJson(steps.goreleaser.outputs.metadata).version) }}" >> "GITHUB_OUTPUT"
+          echo "PACKAGE_NAME=${{ format('{0}_{1}.tar', fromJson(steps.goreleaser.outputs.metadata).project_name, fromJson(steps.goreleaser.outputs.metadata).version) }}" >> "$GITHUB_OUTPUT"
 
       - name: Tar files
         run: tar -cvf ${{ steps.packageName.output.PACKAGE_NAME }} dist/
