@@ -29,3 +29,8 @@ jobs:
 
       - name: Tar files
         run: tar -cvf $PackageName dist/
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.PackageName }}
+          path: ${{ env.PackageName }}
