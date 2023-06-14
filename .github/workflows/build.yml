@@ -24,7 +24,7 @@ jobs:
 
       - uses: goreleaser/goreleaser-action@v3
         with:
-          args: build --rm-dist --snapshot
+          args: build --clean --snapshot
           version: latest
 
       - name: Tar files
