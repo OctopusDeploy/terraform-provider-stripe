@@ -33,9 +33,9 @@ jobs:
           echo "PACKAGE_NAME=${{ format('{0}_{1}.tar', fromJson(steps.goreleaser.outputs.metadata).project_name, fromJson(steps.goreleaser.outputs.metadata).version) }}" >> "$GITHUB_OUTPUT"
 
       - name: Tar files
-        run: tar -cvf ${{ steps.packageName.output.PACKAGE_NAME }} dist/
+        run: tar -cvf ${{ steps.packageName.outputs.PACKAGE_NAME }} dist/
 
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.packageName.output.PACKAGE_NAME }}
-          path: ${{ steps.packageName.output.PACKAGE_NAME }}
+          name: ${{ steps.packageName.outputs.PACKAGE_NAME }}
+          path: ${{ steps.packageName.outputs.PACKAGE_NAME }}
