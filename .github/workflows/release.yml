@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PackageName: terraform-stripe-provider.tar
+      TerraformCloudOrgName: "octopus-deploy"
+      ProviderNamespace: "octopus-deploy"
+      ProviderName: "stripe"
     steps:
       - uses: actions/checkout@v3
 
@@ -21,14 +24,25 @@ jobs:
 
       - uses: crazy-max/ghaction-import-gpg@v5
         id: import_gpg
+        name: Set up GPG
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
 
       - uses: goreleaser/goreleaser-action@v3
+        name: Run GoReleaser
+        id: goreleaser
         with:
           args: release --rm-dist
           version: latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+
+      - name: Create Provider Version
+        run: |
+          response = $(curl 
+            -X POST "https://app.terraform.io/api/v2/organizations/${{ env.TerraformCloudOrgName }}/registry-providers/private/${{ env.ProviderName }}/${{ env.ProviderNamespace }}/${{ env.ProviderName }}/versions" 
+            -H "Content-Type: application/vnd.api+json" 
+            -H "Authorization: Bearer ${{ secrets.TERRAFORM_CLOUD_API_KEY }}" 
+            -d '{ "data": { "type": "registry-provider-versions", "attributes": { "version": "${{ fromJson(steps.goreleaser.outputs.metadata).version }}", "key-id" : "${{ secrets.TERRAFORM_CLOUD_STRIPE_PROVIDER_GPG_KEY_ID }}", "protocols": ["4.0","5.0","6.0"] } } }')
