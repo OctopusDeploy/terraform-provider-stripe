@@ -7,7 +7,8 @@ on:
 
 jobs:
 
-  build:
+  release:
+    name: Release to Terraform Private Registry
     runs-on: ubuntu-latest
     env:
       PackageName: terraform-stripe-provider.tar
