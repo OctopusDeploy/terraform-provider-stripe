@@ -27,8 +27,8 @@ jobs:
         id: import_gpg
         name: Set up GPG
         with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          gpg_private_key: ${{ secrets.OCTOPUS_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.OCTOPUS_GPG_PASSPHRASE }}
 
       - uses: goreleaser/goreleaser-action@v3
         name: Run GoReleaser
