@@ -29,18 +29,18 @@ archives:
       - 'none*'
     format: zip
     name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
-#signs:
-#  - artifacts: checksum
-#    args:
-#      [
-#        "--batch",
-#        "-u",
-#        "{{ .Env.GPG_FINGERPRINT }}",
-#        "--output",
-#        "${signature}",
-#        "--detach-sign",
-#        "${artifact}",
-#      ]
+signs:
+  - artifacts: checksum
+    args:
+      [
+        "--batch",
+        "-u",
+        "{{ .Env.GPG_FINGERPRINT }}",
+        "--output",
+        "${signature}",
+        "--detach-sign",
+        "${artifact}",
+      ]
 snapshot:
   name_template: "{{ incpatch .Version }}-next"
 changelog:
