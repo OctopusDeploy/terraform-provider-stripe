@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+
+  release:
+    name: Release to Terraform Private Registry
+    runs-on: ubuntu-latest
+    env:
+      PackageName: terraform-stripe-provider.tar
+      TerraformCloudOrgName: "octopus-deploy"
+      ProviderNamespace: "octopus-deploy"
+      ProviderName: "stripe"
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.20.0
+
+      - uses: crazy-max/ghaction-import-gpg@v5
+        id: import_gpg
+        name: Set up GPG
+        with:
+          gpg_private_key: ${{ secrets.OCTOPUS_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.OCTOPUS_GPG_PASSPHRASE }}
+
+      - uses: goreleaser/goreleaser-action@v3
+        name: Run GoReleaser
+        id: goreleaser
+        with:
+          args: release --clean
+          version: latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
+
+      - name: Upload to Terraform Registry
+        shell: pwsh
+        run: |
+          .\build\upload-to-registry.ps1 -TerraformCloudApiKey "${{ secrets.TERRAFORM_CLOUD_API_KEY }}" `
+                                         -TerraformCloudOrgName "${{ env.TerraformCloudOrgName }}" `
+                                         -ProviderNamespace "${{ env.ProviderNamespace }}" `
+                                         -ProviderName "${{ env.ProviderName }}" `          
+                                         -ProviderGpgKeyId "${{ secrets.TERRAFORM_CLOUD_STRIPE_PROVIDER_GPG_KEY_ID }}" `
+                                         -ArtifactsJson '${{ steps.goreleaser.outputs.artifacts }}' `
+                                         -MetadataJson '${{ steps.goreleaser.outputs.metadata }}'
