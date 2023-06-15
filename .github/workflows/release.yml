@@ -43,10 +43,10 @@ jobs:
       - name: Upload to Terraform Registry
         shell: pwsh
         run: |
-          .\upload-to-registry.ps1 -TerraformCloudApiKey "${{ secrets.TERRAFORM_CLOUD_API_KEY }}" `
-                                   -TerraformCloudOrgName "${{ env.TerraformCloudOrgName }}" `
-                                   -ProviderNamespace "${{ env.ProviderNamespace }}" `
-                                   -ProviderName "${{ env.ProviderName }}" `          
-                                   -ProviderGpgKeyId "${{ secrets.TERRAFORM_CLOUD_STRIPE_PROVIDER_GPG_KEY_ID }}" `
-                                   -ArtifactsJson '${{ steps.goreleaser.outputs.artifacts }}' `
-                                   -MetadataJson '${{ steps.goreleaser.outputs.metadata }}'
+          .\build\upload-to-registry.ps1 -TerraformCloudApiKey "${{ secrets.TERRAFORM_CLOUD_API_KEY }}" `
+                                         -TerraformCloudOrgName "${{ env.TerraformCloudOrgName }}" `
+                                         -ProviderNamespace "${{ env.ProviderNamespace }}" `
+                                         -ProviderName "${{ env.ProviderName }}" `          
+                                         -ProviderGpgKeyId "${{ secrets.TERRAFORM_CLOUD_STRIPE_PROVIDER_GPG_KEY_ID }}" `
+                                         -ArtifactsJson '${{ steps.goreleaser.outputs.artifacts }}' `
+                                         -MetadataJson '${{ steps.goreleaser.outputs.metadata }}'
