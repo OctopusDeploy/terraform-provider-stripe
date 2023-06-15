@@ -39,16 +39,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
 
-      - name: Create Provider Version
+      - name: Upload to Terraform Registry
+        shell: pwsh
         run: |
-          response = $(curl 
-            -X POST "https://app.terraform.io/api/v2/organizations/${{ env.TerraformCloudOrgName }}/registry-providers/private/${{ env.ProviderName }}/${{ env.ProviderNamespace }}/${{ env.ProviderName }}/versions" 
-            -H "Content-Type: application/vnd.api+json" 
-            -H "Authorization: Bearer ${{ secrets.TERRAFORM_CLOUD_API_KEY }}" 
-            -d '{ "data": { "type": "registry-provider-versions", "attributes": { "version": "${{ fromJson(steps.goreleaser.outputs.metadata).version }}", "key-id" : "${{ secrets.TERRAFORM_CLOUD_STRIPE_PROVIDER_GPG_KEY_ID }}", "protocols": ["4.0","5.0","6.0"] } } }')
-          
-          shasums_url = $( response | jq ".data.links.shasums-upload")
-          sig_url = $( response | jq ".data.links.shasums-sig-upload")
-          
-          echo "SHASUMS_UPLOAD_URL=$(shasums_url)" >> "$GITHUB_OUTPUT"
-          echo "SHASUMS_SIG_UPLOAD_URL=$(sig_url)" >> "$GITHUB_OUTPUT"
+          .\upload-to-registry.ps1 -TerraformCloudApiKey "${{ secrets.TERRAFORM_CLOUD_API_KEY }}" `
+                                   -TerraformCloudOrgName "${{ env.TerraformCloudOrgName }}" `
+                                   -ProviderNamespace "${{ env.ProviderNamespace }}" `
+                                   -ProviderName "${{ env.ProviderName }}" `          
+                                   -ProviderGpgKeyId "${{ secrets.TERRAFORM_CLOUD_STRIPE_PROVIDER_GPG_KEY_ID }}" `
+                                   -ArtifactsJson '${{ steps.goreleaser.outputs.artifacts }}' `
+                                   -MetadataJson '${{ steps.goreleaser.outputs.metadata }}'
