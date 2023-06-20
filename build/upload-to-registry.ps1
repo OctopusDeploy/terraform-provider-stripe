@@ -90,7 +90,7 @@ catch {
 }
 
 # Get the signature file
-$shasums_artifact = $artifacts | Where-Object { $_.type -eq "Signature" } | Select-Object -First 1
+$shasums_sig_artifact = $artifacts | Where-Object { $_.type -eq "Signature" } | Select-Object -First 1
 Write-Output "Uploading SHASUMS.sig file to $shasums_sig_url"
 try {    
     Invoke-RestMethod -Method "PUT" `
